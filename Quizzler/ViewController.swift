@@ -24,8 +24,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         // Sets up first question
-        let firstQuestion = allQuestions.list[0]
-        questionLabel.text = firstQuestion.questionText
+        nextQuestion()
         
     }
 
@@ -45,9 +44,9 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
-        progressLabel.text = "\(questionNumber) /13"
-        scoreLabel.text = String(score + 1)
-   
+        progressLabel.text = "\(questionNumber + 1) /13"
+        scoreLabel.text = "Score: \(score)"
+        progressBar.frame.size.width = view.frame.size.width / 13 * CGFloat(questionNumber + 1)
     }
     
 
@@ -55,6 +54,7 @@ class ViewController: UIViewController {
         // Setup next question if any are left
         if questionNumber <= 12 {
             questionLabel.text = allQuestions.list[questionNumber].questionText
+            updateUI()
         } else {
             // alert popup for end of quiz
             let alert = UIAlertController(title: "Awesome", message: "You've finished all the questions. Do you want to start over?", preferredStyle: .alert)
@@ -66,7 +66,6 @@ class ViewController: UIViewController {
             alert.addAction(restartAction)
             present(alert, animated: true, completion: nil)
         }
-        updateUI()
     }
     
     
@@ -75,6 +74,7 @@ class ViewController: UIViewController {
         print(correctAnswer)
         if correctAnswer == pickedAnswer {
             print("You got it!")
+            score += 1
         } else {
             print("Wrong!")
         }
@@ -83,6 +83,7 @@ class ViewController: UIViewController {
     
     func startOver() {
         questionNumber = 0
+        score = 0
         nextQuestion()
     }
     
